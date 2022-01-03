@@ -6,7 +6,6 @@
     position: relative;
 }
 
-
 .icon {
     position: absolute;
     top: 50%;
@@ -53,10 +52,9 @@ input:hover {
     border-top-width: 0;
     list-style: none;
     margin-top: 0;
-    max-height: 143px;
+    max-height: 200px;
     overflow-y: auto;
     padding-left: 0;
-    width: calc(300px + 1rem);
     box-shadow: 1px -1px 13px -6px rgba(0, 0, 0, 1);
     -webkit-box-shadow: 1px -1px 13px -6px rgba(0, 0, 0, 1);
     -moz-box-shadow: 1px -1px 13px -6px rgba(0, 0, 0, 1);
@@ -68,6 +66,8 @@ input:hover {
     font-weight: normal;
     font-size: 14px;
     line-height: 22px;
+    height:38px;
+    box-sizing: border-box;
 }
 
 .suggestion-active {
@@ -85,6 +85,7 @@ input:hover {
 
 .suggestions-container {
     position: absolute;
+    width: 100%;
 }
 
 .active {

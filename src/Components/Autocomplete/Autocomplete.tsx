@@ -11,6 +11,23 @@ import './Autocomplete.css';
 import { AiOutlineDown } from 'react-icons/ai';
 import { AutocompleteProps, KEYBOARD_KEYS, Option } from './Autocomplete.types';
 
+/**
+ *  Function to pass custom key to autocomplete element
+ *
+ *   bindKey: (value: T) => string | number;
+ *   @param {value: T} passed option object
+ *
+ *   bindKey={(option: {name: 'John doe', user_id: number}) => option.user_id }
+ */
+
+const CONTAINER_HEIGHT = 200;
+const ITEM_HEIGHT = 38;
+
+
+function getScrollDownOffset(itemIndex: number) {
+  return (ITEM_HEIGHT * (itemIndex + 1)) - CONTAINER_HEIGHT;
+}
+
 export const Autocomplete = <T extends unknown>(
   {
     options,
@@ -22,6 +39,7 @@ export const Autocomplete = <T extends unknown>(
   }: AutocompleteProps<T>,
 ) => {
   const ref = useRef(null);
+  const scrollRef = useRef<HTMLUListElement>(null);
   const [ searchText, setSearchText ] = useState('');
   const [ activeIndex, setActiveIndex ] = useState(0);
   const [ filteredOptions, setFilteredOptions ] = useState<Array<Option<T>>>();
@@ -41,6 +59,21 @@ export const Autocomplete = <T extends unknown>(
     setSearchText(event.target.value);
   }, [ onSearchChange ]);
   
+  const handleArrowScroll = () => {
+    const newActiveIndex = activeIndex < filteredOptions!.length - 1 ? activeIndex + 1 : activeIndex;
+    const scrollDownOffset = getScrollDownOffset(newActiveIndex);
+  
+    if (scrollDownOffset > 0) {
+      scrollRef.current!.scrollTop = scrollDownOffset;
+    }
+  }
+  const handleArrowUpScroll = () => {
+    const itemY = (ITEM_HEIGHT * activeIndex)
+    if (itemY < CONTAINER_HEIGHT) {
+      scrollRef.current!.scrollTop -= ITEM_HEIGHT
+    }
+  }
+  
   const handleClickOutside = () => {
     setShow(false);
   };
@@ -59,18 +92,21 @@ export const Autocomplete = <T extends unknown>(
       setShow(false);
       onChange(options[activeIndex].value);
     } else if (e.key === KEYBOARD_KEYS.ARROW_UP) {
+      handleArrowUpScroll()
       setActiveIndex((prevState) => prevState > 0 ? prevState - 1 : (filteredOptions!.length - 1));
+
     } else if (e.key === KEYBOARD_KEYS.ARROW_DOWN) {
+      handleArrowScroll()
       setActiveIndex((prevState => prevState < filteredOptions!.length - 1 ? prevState + 1 : prevState));
     } else {
       return;
     }
-  }, [activeIndex, filteredOptions, onChange, options]);
+  }, [ activeIndex, filteredOptions, onChange, options ]);
   
   const handleOptionClick = useCallback((option: Option<T>, index: number) => {
     setActiveIndex(index);
     onChange(option.value);
-  }, [onChange])
+  }, [ onChange ]);
   
   const handleShowSuggestions = useCallback(() => setShow(true), []);
   return (
@@ -91,7 +127,7 @@ export const Autocomplete = <T extends unknown>(
       >
         {
           show &&
-          <ul className="suggestions">
+          <ul ref={scrollRef} className="suggestions">
             {
               filteredOptions?.map((option, index) => (
                 <li

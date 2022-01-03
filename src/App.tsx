@@ -11,6 +11,7 @@ interface MovieProps {
 function App() {
   const [ options, setOptions ] = useState<Option<number>[]>([]);
   const [ selectedTodo, setSelectedTodo ] = useState<any>(1);
+  
   useEffect(() => {
     const url = 'https://jsonplaceholder.typicode.com/users';
     fetch(url).then(data => data.json())
@@ -32,12 +33,11 @@ function App() {
         options={options}
         value={selectedTodo}
         onChange={value => {
+          console.log(value);
           setSelectedTodo(value);
         }}
-        onSearchChange={value => {
-          setSelectedTodo(value);
-        }}
-        bindKey={value => value}
+        
+        bindKey={value => value }
         placeholder={'Search'}/>
     
     </div>
