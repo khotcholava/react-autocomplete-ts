@@ -10,7 +10,7 @@ interface MovieProps {
 
 function App() {
   const [ options, setOptions ] = useState<Option<number>[]>([]);
-  const [ selectedTodo, setSelectedTodo ] = useState<any>(1);
+  const [ selectedUser, setSelectedUser ] = useState<any>(1);
   
   useEffect(() => {
     const url = 'https://jsonplaceholder.typicode.com/users';
@@ -27,14 +27,13 @@ function App() {
   return (
     <div className="App">
       <div>
-        {selectedTodo}
+        {selectedUser}
       </div>
       <Autocomplete
         options={options}
-        value={selectedTodo}
+        value={selectedUser}
         onChange={value => {
-          console.log(value);
-          setSelectedTodo(value);
+          setSelectedUser(value);
         }}
         
         bindKey={value => value }

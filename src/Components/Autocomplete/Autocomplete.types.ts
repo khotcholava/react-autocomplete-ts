@@ -1,6 +1,6 @@
 export interface AutocompleteProps<T> {
   options: Array<Option<T>>;
-  placeholder: string;
+  placeholder?: string;
   value: T | null;
   onChange: (value: T | null) => any,
   bindKey: (value: T) => string | number;
