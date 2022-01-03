@@ -1,24 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
 import './App.css';
+import { Option } from './Components/Autocomplete/Autocomplete.types';
+import { Autocomplete } from './Components/Autocomplete/Autocomplete';
+
+interface MovieProps {
+  name: string;
+  id: number;
+}
 
 function App() {
+  const [ options, setOptions ] = useState<Option<number>[]>([]);
+  const [ selectedTodo, setSelectedTodo ] = useState<any>(1);
+  useEffect(() => {
+    const url = 'https://jsonplaceholder.typicode.com/users';
+    fetch(url).then(data => data.json())
+      .then((users: MovieProps[]) => {
+        const userOptions = users.map((movie) => ({
+          label: movie.name,
+          value: movie.id,
+        }));
+        setOptions(userOptions);
+      });
+  }, []);
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>
+        {selectedTodo}
+      </div>
+      <Autocomplete
+        options={options}
+        value={selectedTodo}
+        onChange={value => {
+          setSelectedTodo(value);
+        }}
+        onSearchChange={value => {
+          setSelectedTodo(value);
+        }}
+        bindKey={value => value}
+        placeholder={'Search'}/>
+    
     </div>
   );
 }

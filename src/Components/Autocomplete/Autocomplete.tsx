@@ -7,22 +7,9 @@ import React, {
   useState,
 } from 'react';
 import { useClickOutside } from '../../hooks/useClickOutside';
-
 import './Autocomplete.css';
-
-export interface AutocompleteProps<T> {
-  options: Array<Option<T>>;
-  placeholder: string;
-  value: T | null;
-  onChange: (value: T | null) => any,
-  bindKey: (value: T) => string | number;
-  onSearchChange?: (input: string) => void
-}
-
-export interface Option<T> {
-  label: string;
-  value: T;
-}
+import { AiOutlineDown } from 'react-icons/ai';
+import { AutocompleteProps, KEYBOARD_KEYS, Option } from './Autocomplete.types';
 
 export const Autocomplete = <T extends unknown>(
   {
@@ -57,7 +44,6 @@ export const Autocomplete = <T extends unknown>(
   const handleClickOutside = () => {
     setShow(false);
   };
-  
   useClickOutside(ref, handleClickOutside);
   
   useEffect(() => {
@@ -68,42 +54,44 @@ export const Autocomplete = <T extends unknown>(
   }, [ searchText, options ]);
   
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === KEYBOARD_KEYS.ENTER) {
       setActiveIndex(activeIndex);
       setShow(false);
       onChange(options[activeIndex].value);
-    } else if (e.key === 'ArrowUp') {
-      setActiveIndex((prevState) => prevState > 0 ? prevState - 1 : (filteredOptions!.length - 1) );
-    } else if (e.key === 'ArrowDown') {
+    } else if (e.key === KEYBOARD_KEYS.ARROW_UP) {
+      setActiveIndex((prevState) => prevState > 0 ? prevState - 1 : (filteredOptions!.length - 1));
+    } else if (e.key === KEYBOARD_KEYS.ARROW_DOWN) {
       setActiveIndex((prevState => prevState < filteredOptions!.length - 1 ? prevState + 1 : prevState));
     } else {
       return;
     }
-  }, [ activeIndex, options ]);
+  }, [activeIndex, filteredOptions, onChange, options]);
   
-  const handleOptionClick = (option: Option<T>, index: number) => {
+  const handleOptionClick = useCallback((option: Option<T>, index: number) => {
     setActiveIndex(index);
     onChange(option.value);
-  };
-  
+  }, [onChange])
   
   const handleShowSuggestions = useCallback(() => setShow(true), []);
   return (
     <div className="autocomplete-container">
-      <input
-        type="text"
-        placeholder={placeholder}
-        value={selectedOption?.label ?? searchText}
-        ref={ref}
-        onClick={handleShowSuggestions}
-        onKeyDown={e => handleKeyDown(e)}
-        onChange={handleChange}/>
-      
+      <div className="input-group">
+        <input
+          type="text"
+          placeholder={placeholder}
+          value={selectedOption?.label ?? searchText}
+          ref={ref}
+          onClick={handleShowSuggestions}
+          onKeyDown={e => handleKeyDown(e)}
+          onChange={handleChange}/>
+        <AiOutlineDown className={`icon ${show ? 'rotate-icon' : ''}`}/>
+      </div>
       <div
         className={`suggestions-container ${show ? 'animate-suggestions' : ''}`}
       >
         {
-          show && <ul className="suggestions">
+          show &&
+          <ul className="suggestions">
             {
               filteredOptions?.map((option, index) => (
                 <li

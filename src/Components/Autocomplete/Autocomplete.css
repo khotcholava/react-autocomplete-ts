@@ -1,11 +1,28 @@
 .autocomplete-container {
     position: relative;
-    width: 300px;
+}
+
+.input-group {
+    position: relative;
+}
+
+
+.icon {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transition: all .15s linear;
+    transform: translate(0, -50%);
+}
+
+.rotate-icon {
+    transition: all .15s linear;
+    transform: rotate(180deg);
 }
 
 input {
     border: 1px solid #999;
-    padding: 0.5rem;
+    padding: 16px;
     width: 300px;
     outline: none;
 }
