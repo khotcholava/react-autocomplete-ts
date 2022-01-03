@@ -51,19 +51,20 @@ export const Autocomplete = <T extends unknown>(
       <div className={`suggestions-container ${show ? 'animate-suggestions' : ''}`}>
         {
           show &&
-          <ul ref={containerRef} className="suggestions">
-            {
-              filteredOptions?.map((option, index) => (
-                <SuggestedItem
-                  key={bindKey(option.value)}
-                  index={index}
-                  value={option.value}
-                  isActive={activeIndex === index}
-                  label={option.label}
-                  onClick={handleOptionClick}
-                />
-              ))}
-          </ul>
+          
+            <ul ref={containerRef} className="suggestions">
+              {
+                filteredOptions?.map((option, index) => (
+                  <SuggestedItem
+                    key={bindKey(option.value)}
+                    index={index}
+                    value={option.value}
+                    isActive={activeIndex === index}
+                    label={option.label}
+                    onClick={handleOptionClick}
+                  />
+                ))}
+            </ul>
         }
         {
           !filteredOptions?.length

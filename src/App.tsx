@@ -3,9 +3,11 @@ import './App.css';
 import { Option } from './Components/Autocomplete/Autocomplete.types';
 import { Autocomplete } from './Components/Autocomplete/Autocomplete';
 
-interface MovieProps {
+interface IUser {
   name: string;
   id: number;
+  userName: string;
+  email: string
 }
 
 function App() {
@@ -15,10 +17,10 @@ function App() {
   useEffect(() => {
     const url = 'https://jsonplaceholder.typicode.com/users';
     fetch(url).then(data => data.json())
-      .then((users: MovieProps[]) => {
-        const userOptions = users.map((movie) => ({
-          label: movie.name,
-          value: movie.id,
+      .then((users: IUser[]) => {
+        const userOptions = users.map((user) => ({
+          label: user.name,
+          value: user.id,
         }));
         setOptions(userOptions);
       });

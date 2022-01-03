@@ -33,7 +33,8 @@ export function useAutocomplete<T>({
     setActiveIndex(0);
     onSearchChange?.(event.target.value);
     setSearchText(event.target.value);
-  }, [ onSearchChange ]);
+    onChange(null)
+  }, [ onSearchChange, onChange ]);
   
   const handleArrowScroll = () => {
     const newActiveIndex = activeIndex < filteredOptions!.length - 1 ? activeIndex + 1 : activeIndex;
@@ -70,12 +71,9 @@ export function useAutocomplete<T>({
     } else if (e.key === KEYBOARD_KEYS.ARROW_UP) {
       handleArrowUpScroll()
       setActiveIndex((prevState) => prevState > 0 ? prevState - 1 : (filteredOptions!.length - 1));
-      
     } else if (e.key === KEYBOARD_KEYS.ARROW_DOWN) {
       handleArrowScroll()
       setActiveIndex((prevState => prevState < filteredOptions!.length - 1 ? prevState + 1 : prevState));
-    } else {
-      return;
     }
   }, [activeIndex, filteredOptions, handleArrowScroll, handleArrowUpScroll, onChange, options]);
   
