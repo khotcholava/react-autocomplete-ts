@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { Option } from './Components/Autocomplete/Autocomplete.types';
 import { Autocomplete } from './Components/Autocomplete/Autocomplete';
+import { options } from './mock';
 
 interface IUser {
   name: string;
@@ -13,6 +14,9 @@ interface IUser {
 function App() {
   const [ options, setOptions ] = useState<Option<number>[]>([]);
   const [ selectedUser, setSelectedUser ] = useState<any>(1);
+  
+  // For offline options pass this variable as options prop in Autocomplete.
+  // const offlineOptions = options;
   
   useEffect(() => {
     const url = 'https://jsonplaceholder.typicode.com/users';
@@ -28,6 +32,11 @@ function App() {
   
   return (
     <div className="App">
+      <pre>
+        {
+          JSON.stringify(options)
+        }
+      </pre>
       <div>
         {selectedUser}
       </div>
