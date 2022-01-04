@@ -34,7 +34,7 @@ export const Autocomplete = <T extends unknown>(
     bindKey,
     onSearchChange,
   });
-  
+  const suggestionContainerClassName = `suggestions-container ${show ? 'animate-suggestions' : ''}`;
   return (
     <div className="autocomplete-container">
       <div className="input-group">
@@ -48,25 +48,23 @@ export const Autocomplete = <T extends unknown>(
           onChange={handleChange}/>
         <AiOutlineDown className={`icon ${show ? 'rotate-icon' : ''}`}/>
       </div>
-      <div className={`suggestions-container ${show ? 'animate-suggestions' : ''}`}>
-        {
-          show &&
-            <ul ref={containerRef} className="suggestions">
-              {
-                filteredOptions?.map((option, index) => (
-                  <SuggestedItem
-                    key={bindKey(option.value)}
-                    index={index}
-                    value={option.value}
-                    isActive={activeIndex === index}
-                    label={option.label}
-                    onClick={handleOptionClick}
-                  />
-                ))}
-            </ul>
+      <div className={suggestionContainerClassName}>
+        {show &&
+          <ul ref={containerRef} className="suggestions">
+            {
+              filteredOptions?.map((option, index) => (
+                <SuggestedItem
+                  key={bindKey(option.value)}
+                  index={index}
+                  value={option.value}
+                  isActive={activeIndex === index}
+                  label={option.label}
+                  onClick={handleOptionClick}
+                />
+              ))}
+          </ul>
         }
-        {
-          !filteredOptions?.length
+        {!filteredOptions?.length
           && <div className="no-suggestions">
             <i>No suggestions!</i>
           </div>

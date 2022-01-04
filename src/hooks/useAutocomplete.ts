@@ -46,20 +46,21 @@ export function useAutocomplete<T>({
     onChange(null);
   }, [ onSearchChange, onChange ]);
   
-  const handleArrowScroll = () => {
+  const handleArrowScroll = useCallback(() => {
     const newActiveIndex = activeIndex < filteredOptions!.length - 1 ? activeIndex + 1 : activeIndex;
     const scrollDownOffset = getScrollDownOffset(newActiveIndex);
     
     if (scrollDownOffset > 0) {
       scrollRef.current!.scrollTop = scrollDownOffset;
     }
-  };
-  const handleArrowUpScroll = () => {
+  }, [ activeIndex, filteredOptions ]);
+  
+  const handleArrowUpScroll = useCallback(() => {
     const itemY = (ITEM_HEIGHT * activeIndex);
     if (itemY < CONTAINER_HEIGHT) {
       scrollRef.current!.scrollTop -= ITEM_HEIGHT;
     }
-  };
+  }, [ activeIndex ]);
   
   const handleClickOutside = () => {
     setShow(false);
