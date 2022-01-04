@@ -32,11 +32,6 @@ function App() {
   
   return (
     <div className="App">
-      <pre>
-        {
-          JSON.stringify(options)
-        }
-      </pre>
       <div>
         {selectedUser}
       </div>
