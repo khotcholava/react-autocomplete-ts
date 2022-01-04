@@ -51,7 +51,6 @@ export const Autocomplete = <T extends unknown>(
       <div className={`suggestions-container ${show ? 'animate-suggestions' : ''}`}>
         {
           show &&
-          
             <ul ref={containerRef} className="suggestions">
               {
                 filteredOptions?.map((option, index) => (
@@ -69,7 +68,7 @@ export const Autocomplete = <T extends unknown>(
         {
           !filteredOptions?.length
           && <div className="no-suggestions">
-            <em>No suggestions!</em>
+            <i>No suggestions!</i>
           </div>
         }
       </div>

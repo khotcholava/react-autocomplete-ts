@@ -37,10 +37,8 @@ function App() {
         onChange={value => {
           setSelectedUser(value);
         }}
-        
         bindKey={value => value }
         placeholder={'Search'}/>
-    
     </div>
   );
 }
